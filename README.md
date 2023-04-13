@@ -17,4 +17,4 @@ The config file syntax is [TOML](https://toml.io). Entries:
 
 ### License
 
-This software is a free and open source software under AGPL-2.0 as published by the free software foundation. You should have received a copy in LICENSE.md
+This software is a free and open source software under AGPL-3.0 as published by the free software foundation. You should have received a copy in LICENSE.md
