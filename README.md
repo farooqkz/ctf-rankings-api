@@ -15,6 +15,15 @@ The config file syntax is [TOML](https://toml.io). Entries:
  - `redis_addr`(`string`): [Address to a Redis server](https://docs.rs/redis/0.23.0/redis/struct.Client.html)
  - `listen_addr`(`string`): [An address](https://docs.rs/tide/latest/tide/listener/trait.ToListener.html) for the HTTP server to listen on
 
+### API
+
+```
+GET /<mode>/<player_name>
+```
+
+Valid modes: `ctf_mode_{classic,classes,nade_fight}`
+
+
 ### License
 
 This software is a free and open source software under AGPL-3.0 as published by the free software foundation. You should have received a copy in LICENSE.md
