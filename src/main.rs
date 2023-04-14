@@ -1,10 +1,9 @@
-use redis::{Commands, Connection};
+use redis::Commands;
 use serde::Deserialize;
 use std::env::{args, current_dir};
 use std::fs::read;
 use std::path::PathBuf;
 use std::str::from_utf8;
-use tide::prelude::*;
 use tide::{Request, Response};
 
 #[derive(Deserialize, Clone)]
@@ -31,20 +30,19 @@ async fn main() -> tide::Result<()> {
         config = toml::from_str(from_utf8(&read(config_file_path)?)?)?;
     }
 
-    let mut app = tide::new();
-    let client = redis::Client::open(config.redis_addr.clone().as_str())?;
+    let client = redis::Client::open(config.redis_addr.as_str())?;
+    let mut app = tide::with_state(client);
     app.at("/:mode/:username")
-        .get(|req| async { 
-            let mut con = client.get_connection()?;
-            get_ranking_for_mode(req, con) 
-        });
-    app.listen(config.listen_addr);
+        .get(get_ranking_for_mode);
+    app.listen(config.listen_addr).await?;
     Ok(())
 }
 
-fn get_ranking_for_mode(req: Request<()>, mut connection: Connection) -> tide::Result {
+async fn get_ranking_for_mode(req: Request<redis::Client>) -> tide::Result {
     let mode = req.param("mode")?;
     let username = req.param("username")?;
+    let client = req.state();
+    let mut connection = client.get_connection()?;
     let result = connection
         .get(format!("{mode}|{username}"))
         .unwrap_or("".to_string());
