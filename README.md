@@ -5,7 +5,7 @@ This provides a simple RESTful API to get player rankings of a [Minetest CTF](ht
 ### Usage
 
 ```
-./ctf-rankings-api /path/to/config.toml`
+./ctf-rankings-api /path/to/config.toml
 ```
 
 ### The config file syntax
